@@ -1,0 +1,14 @@
+#Shotgun metagenomics sequencing and functional analysis
+Paired-end sequencing (150 bp ×2) was done on a DNBSEQ whole genome sequencer in medium-output mode yielding 24-40 million reads and 7-12 Gbases per sample. 
+Shotgun metagenomic sequence reads were processed with adapter removal, read trimming and low-complexity-reads removal using SOAPnuke "-n 0.001 -l 20 -q 0.5 --adaMis 3 --minReadLen 150".
+Human reference genome (hg38p14) and mouse reference genome (mg39) were used for host-sequence removals of high-quality reads with Metawrap read_qc, and those reads that mapped to reference genomes were removed.
+The remaining reads were processed with assembly, binning and bin refining using Metawrap and taxonomically classified using Kraken2 with the PlusPF database from 5 june 2024. 
+
+For functional profiling, high-quality (filtered) reads were aligned against the SEED database via translated homology search and annotated to Subsystems, or functional levels 1–3 using Super-Focus. We used the SUbsytems Profile by databasE Reduction using SUPER-FOCUS tool for functional analysis.
+
+#Bioinformatics (Taxonomy)
+Taxonomy bar plots were made by first merging OTUs to the taxonomy level of interest using ‘tax_glom()’, and then samples were merged by groups using ‘merge_samples()’. After merging, all taxa with an average abundance of < 1% were combined with unknown reads to improve plot readability. Values were then plotted as relative abundances, where each stacked bar sums to 1. 
+Raw taxonomic counts were rarefied to the minimum sequencing depth before assessing Shannon alpha diversity and Bray–Curtis beta diversity metrics. Diversity metrics were calculated using the ‘vegan’ R package (v.2.6-8). Statistical significance was determined using Wilcoxon rank-sum (alpha) or PERMANOVA (beta) tests.
+
+#Bioinformatics (distribution of ARGs)
+We used Shortbread to quantify the distribution of ARGs. We downloaded the CARD database on 13 February 2024 and the Universal Protein Knowledgebase Database (Uniprot) on 3 july 2024, and created Shortbread profiles to scan the high-quality reads. ARGs were grouped into drug classes and resistance mechanisms according to the CARD ontology. Counts are expressed as RPKMs (reads per kilobase of reference sequence per million sample reads) to account for differences in sequencing depth and gene length. Annotated ARO accession numbers (v.3.2.9) can be viewed in Supplementary Tables 1–4. ARG diversity metrics were calculated in a manner identical to taxonomic diversity but without rarefaction.
